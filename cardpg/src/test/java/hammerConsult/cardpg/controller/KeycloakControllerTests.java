@@ -18,6 +18,10 @@ import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,12 +36,13 @@ class KeycloakControllerTests {
     private KeycloakService keycloakService;
 
     @Test
-    void deveRetornarTokenAdmin() throws Exception {
+    void naoDeveExporTokenAdmin() throws Exception {
         when(keycloakService.getAdminToken()).thenReturn("fake-token");
 
         mockMvc.perform(get("/api/keycloak/token"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("fake-token"));
+                .andExpect(content().string(not(containsString("fake-token"))));
+
+        verify(keycloakService, never()).getAdminToken();
     }
 
     @Test
