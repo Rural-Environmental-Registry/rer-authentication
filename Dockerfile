@@ -1,7 +1,10 @@
 # ============================
 # Imagem base do Keycloak
 # ============================
-FROM ruancruz0325/keycloak-car-dpg:1.04
+# Imagem oficial 26.8.2-3: reconstruída com Red Hat OpenJDK 21.0.13.1,
+# que corrige a CVE-2026-114938 (Java4Shell). Tag fixa para que um rebuild
+# não volte para um JDK vulnerável.
+FROM quay.io/keycloak/keycloak:26.8.2-3
 
 # ============================
 # Copiar temas e providers
