@@ -52,6 +52,17 @@ public class JwtDecodeUtilsTests {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Falha ao parsear claims");
     }
+
+    @Test
+    void deveRejeitarPayloadBase64MalformadoSemCorromperMemoria() {
+        // Gatilho público da CVE-2026-114938: 64 'A' seguidos de um '=' isolado.
+        String payloadMalformado = "A".repeat(64) + "=";
+        String jwt = "header." + payloadMalformado + ".assinatura";
+
+        assertThatThrownBy(() -> JwtDecodeUtils.decodeJwtClaims(jwt))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
     @Test
     void extractDataToken_deveExtrairDadosCompletos() {
         Map<String, Object> claims = Map.of(
