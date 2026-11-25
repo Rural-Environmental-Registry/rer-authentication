@@ -35,7 +35,7 @@ public class KeycloakServiceDuplicateService {
 
 	private String clientId = "api-service";
 
-	private String clientSecret = "YvM5Ymcx5zjcaWAhK4ER2eJw7nI7H50P";
+	private String clientSecret = System.getenv("KEYCLOAK_CLIENT_SECRET");
 
 	private  RestTemplate restTemplate = new RestTemplate();
 
